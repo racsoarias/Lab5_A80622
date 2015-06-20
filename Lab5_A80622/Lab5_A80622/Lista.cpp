@@ -6,6 +6,17 @@ Lista::Lista(){
 }
 
 Lista::~Lista(){
+	if (cabeza != NULL) {
+		destruirRec(cabeza);
+	}
+}
+
+void Lista::destruirRec(Elemento * nodo) {
+	if (nodo->getProx() != NULL) {
+		destruirRec(nodo->getProx());
+	}
+	// Primero se destruye el último y hasta llegar a la cabeza.
+	delete nodo;
 }
 
 void Lista::insertarInicio(Elemento * elemento){
@@ -33,12 +44,11 @@ void Lista::insertarFinal(Elemento * elemento){
 }
 
 void Lista::insertarPosEspecifica(int pos, Elemento * elemento){
-	Elemento *temp = cabeza;
 	if (pos == 0){
-		elemento->setProx(cabeza);
-		cabeza = elemento;
+		eliminarInicial();
 	}
-	else{		
+	else{
+		Elemento * temp = cabeza;
 		/*Si el tamaño de la lista es menor a la posición
 		 *indicada, entonces se reasigna la posición para
 		 *que se inserte al final */
@@ -53,49 +63,65 @@ void Lista::insertarPosEspecifica(int pos, Elemento * elemento){
 }
 
 void Lista::eliminarInicial(){
+	Elemento * tmp = cabeza;
 	if (cabeza != NULL){
 		cabeza = cabeza->getProx();
 	}
+	delete tmp;
 }
 
 void Lista::eliminarFinal(){
-	Elemento *toDelete = cabeza;
-	Elemento *temp = toDelete;
-	if (cabeza != NULL){
-		while (toDelete->getProx() != NULL){
-			temp = toDelete;
-			toDelete = toDelete->getProx();
+	if (cabeza != NULL) {
+		Elemento * anterior = cabeza;
+		Elemento * actual = cabeza;
+		while (actual->getProx() != NULL) {
+			anterior = actual;
+			actual = actual->getProx();
 		}
-	toDelete = NULL;
-	temp->setProx(toDelete); 
+		anterior->setProx(NULL);
+		delete actual;
 	}
 }
 
 void Lista::eliminarPosEspecifica(int pos){
-	Elemento *temp = cabeza;
 	if (pos == 0){
 		cabeza = cabeza->getProx();
 	}
 	else{
+		Elemento *temp = cabeza;
 		/*Si el tamaño de la lista es menor a la posición
 		*indicada, entonces se reasigna la posición para
 		*que se elimine el elemento final */
 		int tam = getListaTam();
 		if (pos > tam){ pos = tam; }
-		
+
 		for (int i = 1; i < pos; i++){
 			temp = temp->getProx();
 		}
+		Elemento * tmp2 = temp->getProx();
 		temp->setProx(temp->getProx()->getProx());
+		delete tmp2;
 	}
 }
 
 int Lista::getListaTam(){
-	Elemento *temp = cabeza; 
+	Elemento *temp = cabeza;
 	int tam = 1;
 	while (temp->getProx() != NULL){
 		temp = temp->getProx();
 		tam++;
 	}
 	return tam;
+}
+
+ostream & operator<<(ostream & out, Lista & a) {
+	a.imprimir(a.cabeza, out);
+	return out;
+}
+
+void Lista::imprimir(Elemento* nodo, ostream& out) {
+	if (nodo->getProx() != NULL) {
+		out << *nodo << "->";
+		imprimir(nodo->getProx(), out);
+	}
 }

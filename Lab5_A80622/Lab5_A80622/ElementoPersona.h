@@ -4,10 +4,13 @@
 
 using namespace std;
 
-class ElementoPersona : public Elemento, public Persona{
+class ElementoPersona : public Elemento {
+
+private:
+	Persona * persona;
 
 public:
-	ElementoPersona(int, string);
+	ElementoPersona(Persona *);
 	virtual ~ElementoPersona();
 	virtual int compareTo(Elemento *);
 	virtual void imprimir(ostream &) const;

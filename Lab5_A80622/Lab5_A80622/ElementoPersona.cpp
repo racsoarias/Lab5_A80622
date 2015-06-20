@@ -2,21 +2,22 @@
 #include "ElementoPersona.h"
 
 
-ElementoPersona::ElementoPersona(int id, string name) : Persona(id, name){
+ElementoPersona::ElementoPersona(Persona * p) : persona(p){
 }
 
 ElementoPersona::~ElementoPersona(){
+	delete persona;
 }
 
 int ElementoPersona::compareTo(Elemento * otro) {
 	int cmp = 0;
-	ElementoPersona * eInt = static_cast<ElementoPersona *>(otro);
+	ElementoPersona * eInt = dynamic_cast<ElementoPersona *>(otro);
 	if (eInt != 0) {
-		cmp = this->id < eInt->id ? -1 : this->id == eInt->id ? 0 : 1;
+		cmp = this->persona->getID() < eInt->persona->getID() ? -1 : this->persona->getID() == eInt->persona->getID() ? 0 : 1;
 	}
 	return cmp;
 }
 
 void ElementoPersona::imprimir(ostream& out) const {
-	out << id;
+	out << this->persona->getID();
 }

@@ -11,5 +11,9 @@ protected:
 public:
 	Persona(int, string);
 	virtual ~Persona();
+	int getID();
+	string getNombre();	
+	void setID(int);
+	void setNombre(string);
 };
 
