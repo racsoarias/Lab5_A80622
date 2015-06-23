@@ -10,7 +10,6 @@ protected:
 	Elemento();
 	Elemento *hijoIzq, *hijoDer, *prox;
 
-
 public:
 
 	Elemento * getHijoIzq();
